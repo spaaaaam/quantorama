@@ -36,7 +36,7 @@ impl<M: Copy + Default, T: Float + Copy + float_cmp::ApproxEq<Margin=M>> float_c
     fn approx_eq<N: Into<Self::Margin>>(self, other: Self, margin: N) -> bool 
     {
         let margin = margin.into();
-        return self.f.approx_eq(other.f, margin) && self.dfdx.approx_eq(other.dfdx, margin);
+        self.f.approx_eq(other.f, margin) && self.dfdx.approx_eq(other.dfdx, margin)
     }
 }
 
@@ -378,7 +378,7 @@ impl<T:Float+From<f64>> From<T> for Jet<T>
 {
     fn from(x: T) -> Jet<T> 
     {
-        return Jet{f: x, dfdx: <T as From<f64>>::from(0.)};
+        Jet{f: x, dfdx: <T as From<f64>>::from(0.)}
     }
 }
 
@@ -396,7 +396,7 @@ impl<T:Float> ops::Add<Jet<T>> for Jet<T>
 
     fn add(self, _rhs: Jet<T>) -> Jet<T>
     {
-        return Jet::new(self.f + _rhs.f, self.dfdx + _rhs.dfdx);
+        Jet::new(self.f + _rhs.f, self.dfdx + _rhs.dfdx)
     }
 }
 
@@ -406,7 +406,7 @@ impl<T:Float> ops::Sub<Jet<T>> for Jet<T>
 
     fn sub(self, _rhs: Jet<T>) -> Jet<T>
     {
-        return Jet::new(self.f - _rhs.f, self.dfdx - _rhs.dfdx);
+        Jet::new(self.f - _rhs.f, self.dfdx - _rhs.dfdx)
     }
 }
 
@@ -416,7 +416,7 @@ impl<T:Float> ops::Mul<Jet<T>> for Jet<T>
 
     fn mul(self, _rhs: Jet<T>) -> Jet<T>
     {
-        return Jet::new(self.f * _rhs.f, self.dfdx *_rhs.f + self.f * _rhs.dfdx);
+        Jet::new(self.f * _rhs.f, self.dfdx *_rhs.f + self.f * _rhs.dfdx)
     }
 }
 
@@ -426,7 +426,7 @@ impl<T:Float> ops::Div<Jet<T>> for Jet<T>
 
     fn div(self, _rhs: Jet<T>) -> Jet<T>
     {
-        return Jet::new(self.f / _rhs.f, (self.dfdx *_rhs.f - self.f * _rhs.dfdx)/(_rhs.f * _rhs.f));
+        Jet::new(self.f / _rhs.f, (self.dfdx *_rhs.f - self.f * _rhs.dfdx)/(_rhs.f * _rhs.f))
     }
 }
 
